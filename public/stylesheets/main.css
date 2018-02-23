@@ -1,0 +1,32 @@
+.alert {
+    margin-top: 3px;
+}
+
+.container-threads {
+    padding-top: 15px;
+}
+
+.badge {
+    color: grey;
+}
+
+.content-input {
+    height: 100px;
+}
+
+.thread {
+    width: 50%;
+    padding-left: 10px;
+    margin: 5px auto;
+    border: 1px solid rgb(128,128,128);
+    
+}
+
+#index-page {
+    margin-top: 40px;
+}
+
+.image {
+    width: 50%;
+    height: 50%;
+}

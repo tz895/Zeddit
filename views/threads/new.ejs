@@ -1,0 +1,41 @@
+<% include ../partials/header %>
+
+    <div class="row">
+        <div class="container container-threads">
+            <h1 style="text-align:center">Create a New Thread</h1>
+        </div>
+        
+        <div style="width: 30%; margin: 25px auto;">
+            <form id="new-thread" action="/threads" method="POST">
+                <div class="form-group">
+                    <label class="badge">Title </label>
+                    <input class="form-control" type="text" name="thread[title]" placeholder="Put your title here">
+                </div>
+                
+                <div class="form-group">
+                    <label class="badge">Image </label>
+                    <input class="form-control" type="text" name="thread[image]" placeholder="The image url">
+                </div>
+                <div class="form-group">
+                    <label class="badge">Content </label>
+                    <!--<input class="form-control content-input" type="text" name="content" placeholder="What do you want people see">-->
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="5" name="thread[content]" placeholder="What do you want people see"></textarea>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox"  name = "thread[adversal]" Value = true>
+                  <label class="form-check-label" for="defaultCheck1">
+                    Adversal
+                  </label>
+                </div>
+                <div class="form-group">
+                    <!--<button class="btn btn-lg btn-primary btn-block">Submit!</button>-->
+                    <input class="btn btn-outline-primary btn btn-primary btn-lg btn-block" type="submit" value="Submit">
+                </div>
+            </form>
+            <a href="/">Back</a>
+        </div>
+        
+    </div>
+
+
+<% include ../partials/footer %>
