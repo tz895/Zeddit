@@ -1,8 +1,59 @@
 // all the middleare goes here
 var middlewareObj = {};
+var Thread = require("../models/thread");
+var Comment = require("../models/comment");
 
+middlewareObj.checkThreadOwnership = function (req, res, next) {
+    // check if the user is logged in
+    if (req.isAuthenticated()) {
+        Thread.findById(req.params.id, function(err, foundThread) {
+            if (err || !foundThread) {
+                req.flash("error", "Campground not found");
+                return res.redirect("back");
+            }
+            else {
+                if (foundThread.author.id.equals(req.user._id) || req.user.isAdmin) {
+                    next();
+                }
+                else {
+                    req.flash("error", "You don't have the permission to do this.");
+                    return res.redirect("back");
+                }
+            }
+        });
+    }
+    else {
+        
+        req.flash("error", "You need to be logged in to do that!"); 
+        return res.redirect("back");
+    }
+};
 
-// A middleware to check whether a user is logged in, if not, redirect to login; If we want this to be applied to all routes, write app.use(isLoggedIn), but in our case, just apply this to comments routes
+middlewareObj.checkCommentOwnership = function (req, res, next) {
+    // check if the user is logged in
+    if (req.isAuthenticated()) {
+        Comment.findById(req.params.comment_id, function(err, foundComment) {
+            if (err || !foundComment) {
+                req.flash("error", "Something went wrong");
+                res.redirect("/");
+            }
+            else {
+                if (foundComment.author.id.equals(req.user._id) || req.user.isAdmin) {
+                    next();
+                }
+                else {
+                    req.flash("error", "You don't have permisson to do that");
+                    res.redirect("/thread/" + req.params.id);
+                }
+            }
+        });
+    }
+    else {
+        req.flash("error", "You need to be logged in to do that");
+        res.redirect("back");
+    }
+};
+
 middlewareObj.isLoggedIn =  function (req, res, next){
     if(req.isAuthenticated()){
         return next();

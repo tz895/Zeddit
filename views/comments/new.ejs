@@ -1,0 +1,26 @@
+<% include ../partials/header %>
+
+    <div class="row">
+        <div class="container container-threads">
+            <h1 style="text-align:center">Create a New Thread</h1>
+        </div>
+        
+        <div style="width: 30%; margin: 25px auto;">
+            <form id="new-thread" action="/threads/<%= thread._id %>/comments" method="POST">
+                <div class="form-group">
+                    <label class="badge">Comment Text </label>
+                    <input class="form-control" type="text" name="comment[text]" placeholder="Put your comment here">
+                </div>
+                
+                <div class="form-group">
+                    <!--<button class="btn btn-lg btn-primary btn-block">Submit!</button>-->
+                    <input class="btn btn-outline-primary btn btn-primary btn-lg btn-block" type="submit" value="Submit">
+                </div>
+            </form>
+            <a href="/threads/<%=thread._id%>">Back</a>
+        </div>
+        
+    </div>
+
+
+<% include ../partials/footer %>

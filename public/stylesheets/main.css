@@ -22,11 +22,36 @@
     
 }
 
+.thread-title {
+    font-weight: bold;
+}
+
+.comment-line {
+    color: blue;
+}
+
+.delete-form {
+    display: inline;
+}
+
+.index-page-image {
+    /* This should keep the aspect ratio */
+    max-height: 300px;
+}
+
 #index-page {
     margin-top: 40px;
 }
 
+#thread-page {
+    margin-top: 80px;
+}
 .image {
     width: 50%;
     height: 50%;
 }
+
+/*fieldset {*/
+/*    border: 2px solid black;*/
+/*}*/
+

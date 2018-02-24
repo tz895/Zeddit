@@ -6,7 +6,7 @@ var threadSchema = new mongoose.Schema({
     content: String,
     votes: Number,
     redirect: String,
-    adversal: Boolean,
+    adversal: { type: Boolean, default: false },
     created: {type: Date, default: Date.now}, 
     author: {
         id: {

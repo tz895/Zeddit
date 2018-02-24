@@ -1,0 +1,64 @@
+<% include ../partials/header %>
+
+<div id="thread-page">
+    <h1><%= thread.title %></h1>
+    <p class="badge badge-light"><em>Create by <a href="#"><%= thread.author.username%></a></em></p>
+    <hr class="my-3">
+    <div>
+        <% if (thread.image) {%>
+            <img src="<%= thread.image %>" class = "image">
+        <% } %>
+    </div>
+    <p><%=thread.content%></p>
+</div>
+
+<div>
+    <!-- if currentUser is false, the expression will not evaluate the following  -->
+    <% if(currentUser && (thread.author.id.equals(currentUser._id) || currentUser.isAdmin) ) { %>
+        <a class="btn btn-outline-warning" href="/threads/<%= thread._id %>/edit">Edit</a>
+        
+        <!-- if you want to delete (with method override, you have to send a POST req, through a form) -->
+        <form class="delete-form" action="/threads/<%= thread._id %>?_method=DELETE" method="POST">
+            <button class="btn btn-outline-danger">Delete</button>
+        </form>
+    <% } %>
+</div>
+<hr class="my-3">
+
+<br>
+<h3>Comment</h3>
+<br>
+<div>
+    <a href="/threads/<%= thread._id %>/comments/new" class="btn btn-outline-info">Add Comment</a>
+</div>
+<br>
+<div>
+    <% thread.comments.forEach(function(comment){ %>
+        <!-- Each comment takes up an entire row, within the col-9 it nested of -->
+        <div class="list-group">
+            <div class="col-md-12">
+                <div class="d-flex w-100 justify-content-between">
+                <strong><%= comment.author.username %></strong>
+                <small><%= moment(comment.created).fromNow() %></small>
+                </div>
+                <p>
+                    <%= comment.text %> 
+                </p>
+                
+                <div class="text-right">
+                <% if(currentUser && (comment.author.id.equals(currentUser._id) || currentUser.isAdmin)) { %>
+                    <a class="btn btn-outline-warning btn-sm" 
+                        href="/threads/<%= thread._id %>/comments/<%= comment._id %>/edit">Edit</a>
+                    <form class="delete-form" action="/threads/<%= thread._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
+                        <input type="submit" class="btn btn-outline-danger btn-sm" value="Delete">
+                    </form>
+                <% } %>
+                <hr class = "comment-line">
+                </div>
+            </div>
+        </div>
+    <% }); %>
+</div>
+<br>
+
+<% include ../partials/footer %>

@@ -3,28 +3,34 @@
 <div id="index-page">
     <div class="container">
         <h1><i class="fab fa-qq"></i> <i class="fab fa-reddit-square"></i> Welcome to Zeddit</h1>
-        <a href="/threads/new" class="btn btn-success"><i class="far fa-plus-square"></i> Create a new thread</a>
+        <br>
+        <a href="/threads/new" class="btn btn-outline-success">Create a new thread</a>
     </div>
     <br>
     <div class="container">
         <div class="list-group">
-
             <% threads.sort(function compareNumbers(a, b) {
-              return b.adversal;
+                if(b.adversal === a.adversal) {
+                    return b.created - a.created;
+                }
+                else {
+                    return b.adversal;
+                }
+              
             });threads.forEach(function(thread){ %>
-                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <a href="/threads/<%=thread._id%>" class="list-group-item list-group-item-action flex-column align-items-start">
                     <div class="d-flex w-100 justify-content-between">
                         <% if (thread.adversal) {%>
-                            <h5 class="mb-1"><i class="fab fa-adversal"></i> <%=thread.title%></h5>
+                            <h5 class="mb-1 thread-title"><i class="fab fa-adversal"></i> <%=thread.title%></h5>
                         <% } %>
                         <% if (!thread.adversal) {%>
-                            <h5 class="mb-1"><%=thread.title%></h5>
+                            <h5 class="mb-1 thread-title"><%=thread.title%></h5>
                         <% } %>
                         
                         <small><%= moment(thread.created).fromNow() %></small>
                     </div>
                     <% if (thread.image) {%>
-                        <img src="<%= thread.image %>" class = "image">
+                        <img src="<%= thread.image %>" class = "index-page-image">
                     <% } %>
                     <p class="mb-1"><%=thread.content%></p>
                     <small><%=thread.author.username%></small>
