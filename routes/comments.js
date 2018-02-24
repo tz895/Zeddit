@@ -37,7 +37,8 @@ router.post("/", middleware.isLoggedIn, function(req, res) {
         }
         else {
             Comment.create({
-                text: req.body.comment.text
+                text: req.body.comment.text,
+                thread: thread._id
             }, function(err, comment) {
                 if (err) {
                     req.flash("error", "Something went wrong");

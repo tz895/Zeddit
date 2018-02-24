@@ -5,6 +5,8 @@ var router = express.Router();
 var Thread = require("../models/thread");
 var Comment = require("../models/comment");
 var middleware = require("../middleware");
+var mongoose = require("mongoose");
+
 
 // ADD THREAD
 // THE SEQUENCE OF ROUTING MATTERS
@@ -91,28 +93,34 @@ router.delete("/:id", middleware.checkThreadOwnership, function(req, res) {
      * If we delete a campground, all the comments should also be deleted!!!
      * But this was not implemented until now! Let's see if Colt will actually do that ... 
      */
-     var commentsIds = [];
-    Thread.findById(req.params.id, function(err, foundThread) {
-       if (err) {
-           console.log("Error in routes/thread.js")
-       } else {
-           commentsIds = foundThread.comments;
-       } 
-    });
     
-    commentsIds.forEach(function(id){
-        Comment.findByIdAndRemove(id, function(err){
-            if (err)  console.log("Error in routes/thread.js - comments remove");
-            else console.log("Deleted comment #" + id);
-        });
-    });
+    
 
-    Thread.findByIdAndRemove(req.params.id, function(err) {
+    Thread.findByIdAndRemove(req.params.id, function(err, removedThread) {
         if (err) {
             req.flash("error", "The thread you are looking for is not found");
             return res.redirect("/");
         }
         else {
+            /** // EXEC() will execute this!
+                // not executed
+                var query = Model.find().remove({ name: 'Anne Murray' })
+                
+                // executed
+                query.remove({ name: 'Anne Murray' }, callback)
+                query.remove({ name: 'Anne Murray' }).remove(callback)
+                
+                // executed without a callback
+                query.exec()
+                
+                // summary
+                query.remove(conds, fn); // executes
+                query.remove(conds)
+                query.remove(fn) // executes
+                query.remove()
+            */
+            Comment.find().where("thread").equals(req.params.id).remove().exec();
+            
             req.flash("success", "Successfully deleted a thread");
             return res.redirect("/");
         }

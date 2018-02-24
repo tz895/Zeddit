@@ -10,7 +10,8 @@ var commentSchema = mongoose.Schema({
             ref: "User" 
         },
         username: String
-    }
+    },
+    thread: { type: mongoose.Schema.Types.ObjectId, ref: 'Thread' }
 });
 
 module.exports = mongoose.model("Comment", commentSchema);
