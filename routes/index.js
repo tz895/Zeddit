@@ -5,23 +5,66 @@ var router = express.Router();
 var passport = require("passport");
 var User = require("../models/user");
 var Thread = require("../models/thread");
-var Comment = require("../models/comment");
-var middleware = require("../middleware");
 
 
 // INDEX
 router.get("/", function(req, res) {
-    Thread.find({}, function(err, allThreads) {
-        if (err) {
-            console.log(err);
-            req.flash("error", "Something went wrong");
-            return res.redirect("back");
-        }
-        else {
-            res.render("index", { threads: allThreads, page: 'index' });
-            // note that here we did not modify the allCampgrounds object, it can be used without any problem. Just like a js object!
-        }
-    });
+    
+    // Pagination
+    var perPage = 4;
+    var pageQuery = parseInt(req.query.page); // what and why this? Who put that query up there?
+    var pageNumber = pageQuery ? pageQuery : 1;
+
+    // Fuzzy search is implemented via submitting a form to "/campgrounds" with method="GET", the data is submitted via query string, which can be accessed via "req.query.search(the name of the input)"
+    if (req.query.search) {
+        // TODO: This should be simplified
+        // There are some npm packages that will make the fuzzy search more efficient, but here we are using regualr expressions; However, there are some issues with regular expressions in this case, for instance, some malicious program can slow down your server or even crashed it with some specific searching patterns
+        
+        const regex = new RegExp(escapeRegex(req.query.search), 'gi'); // g is global and i is ignore case, those are options for this constructor
+        Thread.find({name: regex}).skip((perPage * pageNumber) - perPage).limit(perPage).exec(
+            function(err, foundThreads) {
+                Thread.count({name: regex}).exec(function (err, count) {
+                    if (err) {
+                        req.flash("error", "Something went wrong");
+                        return res.redirect("back");
+                    }
+                    else {
+                        if (foundThreads.length < 1) {
+                            req.flash("error", "No campground match that query, please try again");
+                            return res.redirect("/");
+                        } else {
+                            res.render("index", { 
+                                threads: foundThreads, 
+                                current: pageNumber,
+                                pages: Math.ceil(count / perPage),
+                                page: "index",
+                                search: req.query.search
+                            });
+                        }
+                    }
+                });
+            });
+        
+    }
+    else {
+        // Only showing perPage # of items, skip those ahead
+        Thread.find({}).skip((perPage * pageNumber) - perPage).limit(perPage).exec(function (err, allThreads) {
+            // count means how many pages in total in this case
+            Thread.count().exec(function (err, count) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.render("index", {
+                        threads: allThreads,
+                        current: pageNumber,
+                        pages: Math.ceil(count / perPage),
+                        page: "index",
+                        search: false
+                    });
+                }
+            });
+        });
+    }
 });
 
 // LOGIN
@@ -64,5 +107,9 @@ router.get("/logout", function(req, res){
     req.flash("success", "Logged you out!");
     res.redirect("/");
 });
+
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
 
 module.exports = router;

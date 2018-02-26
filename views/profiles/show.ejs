@@ -1,0 +1,65 @@
+<% include ../partials/header %>
+
+<img src="<%= user.avatar %>" class = "img-profile-show img-thumbnail float-right ">
+
+<div class="container container-threads">
+        <h1>Profile Page </h1>
+        
+    <br>
+        <% if(currentUser && user._id.equals(currentUser._id)) { %>
+            <a href="/profiles/<%=currentUser._id%>/admin" class = "btn btn-outline-primary btn btn-primary">I wanna be an admin</a>
+            <br>
+            <a href = "/profiles/<%=currentUser._id%>/edit" class = "text-right">Edit</a>
+        <% } %>
+
+</div>
+
+<br>
+
+<% if(currentUser && user._id.equals(currentUser._id)) { %>
+    <h2>My Threads</h2>
+<% } else { %>
+    <h2><%= user.username%>'s Threads</h2>  
+<% } %>
+
+
+<hr>
+<div class="container">
+    <div class="list-group">
+        <% if (threads.length === 0) { %>
+                <em style="color: grey;">No Thread yet.</em>
+        <% } %>
+        
+        <% threads.sort(function compareNumbers(a, b) {
+            if(b.adversal === a.adversal) {
+                return b.created - a.created;
+            }
+            else {
+                return b.adversal;
+            }
+          
+        });threads.forEach(function(thread){ %>
+        <div class="index-page-thread-outter-block">
+            <a href="/threads/<%=thread._id%>" class="list-group-item list-group-item-action flex-column align-items-start index-page-thread-inner-block">
+                <div class="d-flex w-100 justify-content-between">
+                    <% if (thread.adversal) {%>
+                        <h5 class="mb-1 thread-title"><i class="fab fa-adversal"></i> <%=thread.title%></h5>
+                    <% } %>
+                    <% if (!thread.adversal) {%>
+                        <h5 class="mb-1 thread-title"><%=thread.title%></h5>
+                    <% } %>
+                    
+                    <small><%= moment(thread.created).fromNow() %></small>
+                </div>
+                <% if (thread.image) {%>
+                    <img src="<%= thread.image %>" class = "index-page-image">
+                <% } %>
+                <p class="mb-1"><%=thread.content%></p>
+            </a>
+            
+        </div>
+        <% }) %>
+    </div>
+</div>
+
+<% include ../partials/footer %>

@@ -2,6 +2,7 @@
 var middlewareObj = {};
 var Thread = require("../models/thread");
 var Comment = require("../models/comment");
+var User = require("../models/user");
 
 middlewareObj.checkThreadOwnership = function (req, res, next) {
     // check if the user is logged in
@@ -53,6 +54,30 @@ middlewareObj.checkCommentOwnership = function (req, res, next) {
         res.redirect("back");
     }
 };
+
+middlewareObj.checkProfileOwnership = function (req, res, next) {
+    if (req.isAuthenticated()) {
+        User.findById(req.params.id, function (err, foundUser) {
+            if (err || !foundUser) {
+                req.flash("error", "Something went wrong");
+                res.redirect("/");
+            }
+            else {
+                if (foundUser._id.equals(req.user._id) || req.user.isAdmin) {
+                    next();
+                }
+                else {
+                    req.flash("error", "You don't have permisson to do that");
+                    res.redirect("/");
+                }
+            }
+        });
+    }
+    else {
+        req.flash("error", "You need to be logged in to do that");
+        res.redirect("back");
+    }
+}
 
 middlewareObj.isLoggedIn =  function (req, res, next){
     if(req.isAuthenticated()){

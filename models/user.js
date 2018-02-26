@@ -6,7 +6,8 @@ var UserSchema = new mongoose.Schema({
     password: String,
     // email: {type: String, unique: true},
     created: {type: Date, default: Date.now},
-    isAdmin: { type: Boolean, default: false }
+    isAdmin: { type: Boolean, default: false },
+    avatar: {type: String, default: "https://freeiconshop.com/wp-content/uploads/edd/reddit-outline.png"}
 });
 
 UserSchema.plugin(passportLocalMongoose);

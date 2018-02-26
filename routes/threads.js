@@ -1,11 +1,8 @@
 var express = require("express");
-
-// This is not the same as "app"
 var router = express.Router();
 var Thread = require("../models/thread");
 var Comment = require("../models/comment");
 var middleware = require("../middleware");
-var mongoose = require("mongoose");
 
 
 // ADD THREAD

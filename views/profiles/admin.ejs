@@ -1,0 +1,25 @@
+<!-- dir matters -->
+<% include ../partials/header %>
+
+    <div style="margin-top:2em">
+        <div class="row">
+            <div class="container">
+                <h1 style="text-align: center">Enable Admin</h1>
+            </div>
+            
+            <div style="width: 30%; margin: 25px auto;">
+                <form action="/profiles/<%= userId %>/admin" method="POST">
+                    <div class="form-group">
+                        <input class="form-control" type="password" name="adminCode" placeholder="admin secret code">
+                    </div>
+                    <input class="btn btn-outline-primary btn btn-primary btn-lg btn-block" type="submit" value="Let me be an admin">
+                </form>
+                <br>
+                <a href="/profile/<%=userId%>">Go Back</a>
+            </div>
+        </div>
+    </div>
+    
+
+
+<% include ../partials/footer %> 

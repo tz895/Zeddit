@@ -13,7 +13,12 @@ var User = require("./models/user");
 // time api
 app.locals.moment = require('moment');
 
-mongoose.connect("mongodb://localhost/a");
+// mongoose.connect("mongodb://localhost/a");
+// mongoose.connect("mongodb://user1:11336689@ds249398.mlab.com:49398/zeddit");
+var url = process.env.DBURL || "mongodb://localhost/a";
+mongoose.connect(url)
+
+
 
 app.use(express.static(__dirname + "/public"));
 app.use(methodOverride("_method")); // "_method" is sth to remind your app to keep an eye on this string in the URL
@@ -39,7 +44,8 @@ passport.use(new LocalStrategy(User.authenticate()));
 //requring routes
 var threadRoutes = require("./routes/threads"),
     indexRoutes = require("./routes/index"),
-    commentRoutes = require("./routes/comments");
+    commentRoutes = require("./routes/comments"),
+    profileRoutes = require("./routes/profiles");
     
 
 
@@ -57,6 +63,7 @@ app.use(function(req, res, next){
 app.use("/", indexRoutes);
 app.use("/threads", threadRoutes);
 app.use("/threads/:id/comments", commentRoutes);
+app.use("/profiles", profileRoutes);
 
 
 app.listen(process.env.PORT, process.env.IP, function(){

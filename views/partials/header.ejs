@@ -9,34 +9,36 @@
     <title>Zeddit</title>
     
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">-->
+    
+    
+    <link rel="stylesheet" href="/lib/bootstrap-4.0.0-dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+    <!--open iconic support-->
+    <link href="/open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
     
     <link rel="stylesheet" type="text/css" href="/stylesheets/main.css">
-    
-    
+
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
   </head>
   <body>
     
-	<nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        
-        <div class="container">
-            <a class="navbar-brand" href="/">Zeddit</a>
-        
+	<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+	    <div class="container">
+	        <a class="navbar-brand" href="/"><i class="fab fa-reddit-square"></i> Zeddit</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item <%= typeof page !== 'undefined' && page === "index" ? "active" : "" %>">
                         <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                     </li>
+                    
                 </ul>
                 
                 <ul class="navbar-nav justify-content-end" >
-                    
-                    
-                    
                     <% if (!currentUser) {%>
                         <li class="nav-item">
                             <a class="nav-link" href="/login">Login</a>
@@ -46,11 +48,17 @@
                         </li>
                     <% } %>
                     
-                    
-                    
                     <% if (currentUser) {%>
+                        <li class = "nav-item">
+                           <% if(currentUser.isAdmin) {%>
+                                <i class="fas fa-star" style="color: yellow"></i>
+                            <% } %>
+                        </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Signed in as <%= currentUser.username %></a>
+                            <a class="nav-link" href="/profiles/<%=currentUser._id%>">Signed in as <%= currentUser.username %></a>
+                        </li>
+                        <li class="nav-item">
+                            <img src="<%= currentUser.avatar %>" class = "profile-image">
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/logout">Logout</a>
@@ -58,8 +66,14 @@
                     <% } %>
                     
                 </ul>
+                
+                <!-- Search -->
+                <!--<form class="form-inline my-2 my-lg-0">-->
+                <!--    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
+                <!--    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
+                <!--</form>-->
             </div>
-        </div>
+	    </div>
     </nav>
     
     

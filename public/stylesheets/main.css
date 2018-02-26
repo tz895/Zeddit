@@ -1,3 +1,12 @@
+body {
+    z-index: 0;
+    position: relative;
+}
+
+.first-container {
+    margin-top: 62px;
+}
+
 .alert {
     margin-top: 3px;
 }
@@ -14,13 +23,12 @@
     height: 100px;
 }
 
-.thread {
-    width: 50%;
-    padding-left: 10px;
-    margin: 5px auto;
-    border: 1px solid rgb(128,128,128);
-    
-}
+/*.thread {*/
+/*    width: 50%;*/
+/*    padding-left: 10px;*/
+/*    margin: 5px auto;*/
+    /*border: 1px solid rgb(128,128,128);*/
+/*}*/
 
 .thread-title {
     font-weight: bold;
@@ -36,7 +44,32 @@
 
 .index-page-image {
     /* This should keep the aspect ratio */
-    max-height: 300px;
+    height: 60px;
+    width: 60px;
+}
+
+.index-page-thread-inner-block {
+    /* removed the border color */
+    border-color: transparent;
+}
+
+.index-page-author-link-block {
+    color: lightgrey;
+    width: 100%;
+    text-align: center;
+    margin-left: 2%;
+    margin-bottom: 5px;
+}
+
+.index-page-author-link-block a {
+    color: lightgrey;
+}
+
+
+.index-page-thread-outter-block {
+    margin: 10px 0;
+    border: 1px solid lightgrey;
+    border-radius: 5px; /* rounder corner block */
 }
 
 #index-page {
@@ -55,3 +88,16 @@
 /*    border: 2px solid black;*/
 /*}*/
 
+.profile-image {
+    width: 40px;
+    height: 40px;
+}
+
+.img-profile-show {
+    width: 128px;
+    height:128px;
+}
+
+.adversal {
+    color: red;
+}
